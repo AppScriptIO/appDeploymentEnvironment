@@ -1,3 +1,0 @@
-[submodule "dependency/appDeploymentEnvironment"]
-	path = dependency/appDeploymentEnvironment
-	url = https://github.com/myuseringithub/appDeploymentEnvironment
