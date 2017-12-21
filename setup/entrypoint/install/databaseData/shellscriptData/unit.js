@@ -134,7 +134,7 @@ let data = [
             shell: true,
             stdio: [0, 1, 2]
         }, 
-        implementation: 'file'        
+        implementation: 'file'
     },
     {
         key: '7da4e483-2c3b-49c6-9b99-baa6bc7d0ab6',

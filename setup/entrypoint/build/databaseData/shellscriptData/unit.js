@@ -1,4 +1,4 @@
-const configuration = require('../../../../setup/configuration/configuration.export.js')
+const configuration = require('../../../../configuration/configuration.export.js')
 
 let data = [
     /**

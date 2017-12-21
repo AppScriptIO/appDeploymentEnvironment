@@ -2,17 +2,37 @@ console.log('• entrypointConfigurationPath:' + process.env.entrypointConfigura
 console.log('• entrypointOption:' + process.env.entrypointOption)
 
 import path from 'path'
-const configuration = require('../../setup/configuration/configuration.export.js')
-const entrypointConfigList = require('../../setup/entrypoint/configuration.js')
+const filesystem = require('fs')
+const configuration = require('../setup/configuration/configuration.export.js')
+const entrypointConfigList = require('../setup/entrypoint/configuration.js')
+const projectPath = configuration.directory.projectContainerRootFolder
+const defaultEntrypointPath = path.join(projectPath, `application/setup/entrypoint`)
+const { spawn, spawnSync } = require('child_process')
 
 let entrypointName = process.env.entrypointOption
 let entrypointConfig = entrypointConfigList[entrypointName] || null
 
 if(entrypointConfig) {
-    let relativeFilePath = entrypointConfig.file || `./application/setup/entrypoint/${entrypointName}.js`
-    let moduleAbsolutePath = path.join(configuration.directory.projectContainerRootFolder, relativeFilePath)
+
+    let modulePath
+    if(entrypointConfig.file) {
+        modulePath = path.join(projectPath, entrypointConfig.file)
+    } else {
+        modulePath = path.join(defaultEntrypointPath, `${entrypointName}`) // .js file or folder module.
+    }
+    
+    // install node_modules if not present in case a folder is being passed.
+    // ISSUE - installing node_modules of and from within running module, will fail to load the newlly created moduules as node_modules path was already read by the nodejs application.
+    function installModule({ currentDirectory }) { spawnSync('yarn', ["install --pure-lockfile --production=false"], { cwd: currentDirectory, shell: true, stdio:[0,1,2] }) }
+    let directory = modulePath
+    let isNodeModuleInstallExist = filesystem.existsSync(`${directory}/node_modules`)
+    let isDirecotory = filesystem.lstatSync(directory).isDirectory()
+    if (!isNodeModuleInstallExist && isDirecotory) {
+        installModule({ currentDirectory: directory })
+    }
+    
     try {
-        require(moduleAbsolutePath)
+        require(modulePath)
     } catch (error) {
         throw error
     }

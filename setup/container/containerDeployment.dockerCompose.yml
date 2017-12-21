@@ -25,7 +25,7 @@ services:
             # dockerfile path relative to the context specified above.
             dockerfile: ./application/setup/container/containerBuild.dockerFile
             network: # add network for build runtime (dockerfile RUN commands).
-                "appdeploymentenvironment_build"
+                "appdeploymentenvironment_build" # ISSUE - docker doesn't resolve the project name, it should be specified explicitly
             args: 
                 - DEPLOYMENT=${DEPLOYMENT}
                 - entrypointConfigurationPath=${entrypointConfigurationPath}
@@ -66,9 +66,9 @@ services:
             entrypointOption: ${entrypointOption}
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ../../../babel_javascriptTranspilation.js:/project/dependency/babel_javascriptTranspilation.js/
+            - ../../dependency:/project/dependency
             - ../../:/project/application
-        command: bash -c "node -v; node /project/application/source/containerDeploymentManagement.js.container/entrypoint.js"
+        command: bash -c "node /project/application/source/entrypoint.js"
         working_dir: /project/application
 
     containerDeploymentManagement:

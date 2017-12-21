@@ -2,9 +2,9 @@ process.env.SZN_DEBUG = true
 import path from 'path'
 const { spawn, spawnSync } = require('child_process')
 import rethinkDB from 'rethinkdb'
-import configuration from '../../../setup/configuration/configuration.js'
+import configuration from '../../configuration/configuration.js'
 let createStaticInstanceClasses = require('appscript/module/reusableNestedUnit')
-import initializeDatabaseData from '../databaseData/initializeDatabaseData.js'
+import initializeDatabaseData from './databaseData/initializeDatabaseData.js'
 
 ;(async function() {
     let connection = await rethinkDB.connect({ host: 'rethinkdb', port: 28015 })

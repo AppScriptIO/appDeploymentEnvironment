@@ -1,11 +1,11 @@
 module.exports = {
     install: {
-        file: './application/source/containerInstallationNodejs',
+        file: './application/setup/entrypoint/install',
     },
     build: {
-        file: './application/setup/entrypoint/build.js',
+        file: './application/setup/entrypoint/build',
     },
     run: {
-        file: './application/setup/entrypoint/run.js',
+        file: './application/setup/entrypoint/run',
     }
 }
