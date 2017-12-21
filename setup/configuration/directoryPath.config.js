@@ -3,15 +3,17 @@
  */
 module.exports = [
   {
-    deploymentType: 'containerManagement',
+    deploymentType: 'selfManaged',
     directory: {
-      projectContainerRootFolder: "/project"
+      containerManagerRootFolder: "/project",
+      managedApplicationRootFolder: '/project'
     }
   },
   {
-    deploymentType: 'imageBuild',
+    deploymentType: 'containerManager',
     directory: {
-      projectContainerRootFolder: "/project/appDeploymentEnvironment"    
+      containerManagerRootFolder: "/project/appDeploymentEnvironment",
+      managedApplicationRootFolder: '/project'      
     }      
   }
 

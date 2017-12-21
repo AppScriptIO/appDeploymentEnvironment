@@ -24,7 +24,7 @@ const filesystem = require('fs')
 const path = require('path')
 const { execSync, spawn, spawnSync } = require('child_process')
 const configuration = require('../setup/configuration/configuration.export.js')
-const projectFolder = configuration.directory.projectContainerRootFolder
+const projectFolder = configuration.directory.containerManagerRootFolder
 // Install nodejs packages before  
 function installModule({ currentDirectory }) { spawnSync('yarn', ["install --pure-lockfile --production=false"], { cwd: currentDirectory, shell: true, stdio:[0,1,2] }) }
 

@@ -6,7 +6,7 @@ let createStaticInstanceClasses = require('appscript/module/reusableNestedUnit')
 import initializeDatabaseData from './databaseData/initializeDatabaseData.js'
 import configurationMain from '../../configuration/configuration.js'
 const configuration = require('../../configuration/configuration.export.js')
-const projectFolder = configuration.directory.projectContainerRootFolder
+const projectFolder = configuration.directory.containerManagerRootFolder
 
 ;(async function() {
     let connection = await rethinkDB.connect({ host: 'rethinkdb', port: 28015 })

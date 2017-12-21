@@ -57,7 +57,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.directory.projectContainerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.directory.containerManagerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `up --force-recreate rethinkdb_build`
         ],
@@ -75,7 +75,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.directory.projectContainerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.directory.containerManagerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `build dockerfileBuild`
         ],
@@ -85,7 +85,7 @@ let data = [
             stdio: [0, 1, 2],
             env: {
                 dockerImage: process.env.dockerImage,
-                DEPLOYMENT: 'imageBuild',
+                DEPLOYMENT: 'containerManager',
                 entrypointConfigurationPath: process.env.entrypointConfigurationPath,
                 entrypointOption: 'install'
             }
@@ -99,7 +99,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.directory.projectContainerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.directory.containerManagerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `stop rethinkdb_build`
         ],

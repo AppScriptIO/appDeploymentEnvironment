@@ -4,7 +4,7 @@
  # ./entrypoint.sh [build|run] entrypointConfigurationPath=./entrypoint/configuration.js entrypointOption=[install|build|...]
 ##
 
-# : ${DEPLOYMENT:=containerManagement}; export DEPLOYMENT # set variable only if if is unset or empty string.
+# : ${DEPLOYMENT:=selfManaged}; export DEPLOYMENT # set variable only if if is unset or empty string.
 
 currentFilePath=$(dirname "$0")
 dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCompose.yml"
@@ -15,7 +15,7 @@ dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCo
 # # USAGE: ./entrypoint.sh build entrypointConfigurationPath=./entrypoint/configuration.js entrypointOption=install
 # build() {
 #     # --no-cache can be used.
-#     DEPLOYMENT=imageBuild; export DEPLOYMENT;    
+#     DEPLOYMENT=containerManager; export DEPLOYMENT;    
 #     docker-compose -f $dockerComposeFilePath build --no-cache dockerfile
 # }
 
@@ -24,7 +24,7 @@ dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCo
 # USAGE for debugging: ./entrypoint.sh build entrypointConfigurationPath=./application/setup/entrypoint/configuration.js entrypointOption=run
 build() {
     # docker-compose -f $dockerComposeFilePath pull containerDeploymentManagement
-    DEPLOYMENT=containerManagement; 
+    DEPLOYMENT=selfManaged; 
     
     # Check if docker image exists
     dockerImage=myuserindocker/deployment-environment:latest;

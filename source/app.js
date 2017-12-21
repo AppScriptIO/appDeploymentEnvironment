@@ -5,8 +5,8 @@ import path from 'path'
 const filesystem = require('fs')
 const configuration = require('../setup/configuration/configuration.export.js')
 const entrypointConfigList = require('../setup/entrypoint/configuration.js')
-const projectPath = configuration.directory.projectContainerRootFolder
-const defaultEntrypointPath = path.join(projectPath, `application/setup/entrypoint`)
+const managedAppFolder = configuration.directory.managedApplicationRootFolder
+const defaultEntrypointPath = path.join(managedAppFolder, `application/setup/entrypoint`)
 const { spawn, spawnSync } = require('child_process')
 
 let entrypointName = process.env.entrypointOption
@@ -16,7 +16,7 @@ if(entrypointConfig) {
 
     let modulePath
     if(entrypointConfig.file) {
-        modulePath = path.join(projectPath, entrypointConfig.file)
+        modulePath = path.join(managedAppFolder, entrypointConfig.file)
     } else {
         modulePath = path.join(defaultEntrypointPath, `${entrypointName}`) // .js file or folder module.
     }

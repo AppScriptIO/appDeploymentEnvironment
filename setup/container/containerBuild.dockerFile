@@ -6,6 +6,7 @@ MAINTAINER SZN
 ARG PROJECT="/project"
 # ContainerManager
 ARG containerManager="$PROJECT/appDeploymentEnvironment" 
+    ENV containerManager ${containerManager}
 
 
 # Copy files and make them executable.
@@ -29,11 +30,9 @@ RUN find $PROJECT/ -type f -exec chmod +x {} \;
 RUN node $containerManager/application/source/
 
 ### Define command for runtime. For using container from dockerhub immediately.
-ARG entrypointConfigurationPath=$PROJECT/application/setup/entrypoint/configuration.js
-    ENV entrypointConfigurationPath ${entrypointConfigurationPath}
-ARG entrypointOption=run
-    ENV entrypointOption ${entrypointOption}
-ARG is_managerContainer=true
-    ENV is_managerContainer ${is_managerContainer}
+ENV DEPLOYMENT=containerManager
+ENV entrypointConfigurationPath=$PROJECT/application/setup/entrypoint/configuration.js
+ENV entrypointOption=run
+ENV is_managerContainer=true
 # Executed only on runtime.
 CMD node $containerManager/application/source/entrypoint.js
