@@ -31,7 +31,7 @@ RUN node $containerManager/application/source/
 
 ### Define command for runtime. For using container from dockerhub immediately.
 ENV DEPLOYMENT=containerManager
-ENV entrypointConfigurationPath=$PROJECT/application/setup/entrypoint/configuration.js
+ENV entrypointConfigurationPath="$PROJECT/application/setup/entrypoint/configuration.js"
 ENV entrypointOption=run
 ENV is_managerContainer=true
 # Executed only on runtime.

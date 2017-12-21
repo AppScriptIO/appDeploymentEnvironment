@@ -4,12 +4,13 @@ console.log('• entrypointOption:' + process.env.entrypointOption)
 import path from 'path'
 const filesystem = require('fs')
 const configuration = require('../setup/configuration/configuration.export.js')
-const entrypointConfigList = require('../setup/entrypoint/configuration.js')
 const managedAppFolder = configuration.directory.managedApplicationRootFolder
 const defaultEntrypointPath = path.join(managedAppFolder, `application/setup/entrypoint`)
 const { spawn, spawnSync } = require('child_process')
 
 let entrypointName = process.env.entrypointOption
+let entrypointConfigPath = process.env.entrypointConfigurationPath || path.join(defaultEntrypointPath, 'configuration.js')
+const entrypointConfigList = require(entrypointConfigPath)
 let entrypointConfig = entrypointConfigList[entrypointName] || null
 
 if(entrypointConfig) {
@@ -24,10 +25,15 @@ if(entrypointConfig) {
     // install node_modules if not present in case a folder is being passed.
     // ISSUE - installing node_modules of and from within running module, will fail to load the newlly created moduules as node_modules path was already read by the nodejs application.
     function installModule({ currentDirectory }) { spawnSync('yarn', ["install --pure-lockfile --production=false"], { cwd: currentDirectory, shell: true, stdio:[0,1,2] }) }
-    let directory = modulePath
+    let directory;
+    //check if javascript module is file or directory 
+    if(filesystem.existsSync(modulePath)) {
+        directory = modulePath
+    } else if(filesystem.existsSync(`${modulePath}.js`)) {
+        directory = modulePath.substr(0, modulePath.lastIndexOf("/"))
+    }
     let isNodeModuleInstallExist = filesystem.existsSync(`${directory}/node_modules`)
-    let isDirecotory = filesystem.lstatSync(directory).isDirectory()
-    if (!isNodeModuleInstallExist && isDirecotory) {
+    if (!isNodeModuleInstallExist) {
         installModule({ currentDirectory: directory })
     }
     

@@ -32,7 +32,7 @@ build() {
         dockerImage=node:latest
     fi
     echo "• dockerImage=$dockerImage"
-
+    
     export dockerImage; export DEPLOYMENT;
     # run container manager
     docker-compose \

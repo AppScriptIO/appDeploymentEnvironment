@@ -85,7 +85,7 @@ let data = [
             stdio: [0, 1, 2],
             env: {
                 dockerImage: process.env.dockerImage,
-                DEPLOYMENT: 'containerManager',
+                DEPLOYMENT: 'imageBuild',
                 entrypointConfigurationPath: process.env.entrypointConfigurationPath,
                 entrypointOption: 'install'
             }

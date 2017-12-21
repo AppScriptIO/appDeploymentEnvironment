@@ -10,6 +10,13 @@ module.exports = [
     }
   },
   {
+    deploymentType: 'imageBuild',
+    directory: {
+      containerManagerRootFolder: "/project/appDeploymentEnvironment",
+      managedApplicationRootFolder: '/project/appDeploymentEnvironment'      
+    }      
+  },
+  {
     deploymentType: 'containerManager',
     directory: {
       containerManagerRootFolder: "/project/appDeploymentEnvironment",
