@@ -33,6 +33,7 @@ let data = [
             { nestedUnit: '4f3590f7-efd4-4fd5-9b91-13d7bd846b1d', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: 'a80d1439-fa3b-44c8-8203-b26d590c14ae', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: '25f4a639-3fcf-4378-9c04-60cf245cd916', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
+            { nestedUnit: 'x5f4a639-3fcf-4378-9c04-60cf245cd916', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: '43ba48c5-2dfe-4c31-bc8b-6862a6241a45', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: 'e9353b5c-852d-480f-82e8-0e715ef02eb7', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: 'f0a2790d-d5c9-4877-9181-609bbc0b98ed', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
@@ -45,6 +46,25 @@ let data = [
     { key: 'e9353b5c-852d-480f-82e8-0e715ef02eb7', label: { name: 'nano' }, unit: 'abffa7d2-100f-4283-b03c-42f9c4a806a7', insertionPoint: [], children: [], },
     { key: 'f0a2790d-d5c9-4877-9181-609bbc0b98ed', label: { name: 'zip & unzip' }, unit: '9945d6d5-1f51-4ee0-8183-bbbb19b6ca80', insertionPoint: [], children: [], },
     { key: '97594d28-73d0-49df-8f3f-57241078acd3', label: { name: 'apt-utils' }, unit: '5bd9f5e6-f53f-48eb-8411-7bbe442b40c8', insertionPoint: [], children: [], },
+
+
+    /**
+     * Install docker-compose
+     */
+    {
+        key: 'x5f4a639-3fcf-4378-9c04-60cf245cd916', label: { name: 'Install Docker Compose' },
+        insertionPoint: [
+            { key: '2299cc1e-238f-4fe5-9069-51351ded59a7', order: 1, executionType: 'chronological' },
+        ],
+        children: [
+            { nestedUnit: 'x5a2a235-e7e0-4534-a671-2d651a3a757d', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
+            { nestedUnit: 'x977f37d-0de6-4629-a684-c00b429b8f2a', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
+            { nestedUnit: 'x62497932-fc7b-4cb5-999a-ab02c82539b5', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
+        ],
+    },
+    { key: 'x5a2a235-e7e0-4534-a671-2d651a3a757d', label: { name: 'download docker compose latest version' }, unit: '16181bdc-16f2-4fb3-af1f-4fe301ab6a18', insertionPoint: [], children: [], },
+    { key: 'x977f37d-0de6-4629-a684-c00b429b8f2a', label: { name: 'install downloaded docker-compose' }, unit: '1a4c633a-24a0-4255-834f-0181a6ce48f0', insertionPoint: [], children: [], },
+    { key: 'x62497932-fc7b-4cb5-999a-ab02c82539b5', label: { name: 'print version' }, unit: '19f404a4-d0f6-41a5-9b66-0e5136c76ddb', insertionPoint: [], children: [], },
 
     /**
      *  Linux packages 

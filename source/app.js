@@ -9,7 +9,9 @@ const defaultEntrypointPath = path.join(managedAppFolder, `application/setup/ent
 const { spawn, spawnSync } = require('child_process')
 
 let entrypointName = process.env.entrypointOption
-let entrypointConfigPath = process.env.entrypointConfigurationPath || path.join(defaultEntrypointPath, 'configuration.js')
+let entrypointConfigPath = (process.env.entrypointConfigurationPath) ?
+    process.env.entrypointConfigurationPath :
+    path.join(defaultEntrypointPath, 'configuration.js');
 const entrypointConfigList = require(entrypointConfigPath)
 let entrypointConfig = entrypointConfigList[entrypointName] || null
 
