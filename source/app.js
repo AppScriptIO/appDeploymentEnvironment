@@ -1,5 +1,6 @@
 console.log('• entrypointConfigurationPath:' + process.env.entrypointConfigurationPath)
 console.log('• entrypointOption:' + process.env.entrypointOption)
+process.argv = process.argv.slice(2)
 
 import path from 'path'
 const filesystem = require('fs')
@@ -8,7 +9,13 @@ const managedAppFolder = configuration.directory.managedApplicationRootFolder
 const defaultEntrypointPath = path.join(managedAppFolder, `application/setup/entrypoint`)
 const { spawn, spawnSync } = require('child_process')
 
-let entrypointName = process.env.entrypointOption
+let entrypointName;
+if(process.argv[0]) {
+    console.log(`Arguments passed: ${process.argv.toString()}`)
+    entrypointName = process.argv.shift() // update global argv
+} else {
+    entrypointName = process.env.entrypointOption
+}
 let entrypointConfigPath = (process.env.entrypointConfigurationPath) ?
     process.env.entrypointConfigurationPath :
     path.join(defaultEntrypointPath, 'configuration.js');

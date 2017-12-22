@@ -20,7 +20,7 @@ dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCo
 # }
 
 # For managing the the development, build, & testing of this project.
-# USAGE: ./entrypoint.sh build entrypointConfigurationPath=./application/setup/entrypoint/configuration.js entrypointOption=build dockerImageTag=X
+# USAGE: ./entrypoint.sh build entrypointConfigurationPath=/project/application/setup/entrypoint/configuration.js entrypointOption=build dockerImageTag=X
 # USAGE for debugging: ./entrypoint.sh build entrypointConfigurationPath=./application/setup/entrypoint/configuration.js entrypointOption=run
 build() {
     # docker-compose -f $dockerComposeFilePath pull containerDeploymentManagement
