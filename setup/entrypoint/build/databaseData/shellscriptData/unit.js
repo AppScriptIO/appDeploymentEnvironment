@@ -86,7 +86,7 @@ let data = [
             env: {
                 dockerImage: process.env.dockerImage,
                 DEPLOYMENT: 'imageBuild',
-                entrypointConfigurationPath: process.env.entrypointConfigurationPath,
+                // entrypointConfigurationPath: process.env.entrypointConfigurationPath,
                 entrypointOption: 'install'
             }
         },
