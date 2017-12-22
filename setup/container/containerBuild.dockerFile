@@ -34,7 +34,7 @@ ENV DEPLOYMENT=containerManager
 ENV entrypointConfigurationPath="$PROJECT/application/setup/entrypoint/configuration.js"
 ENV entrypointOption=run
 ENV is_managerContainer=true
-RUN echo -e '#!/bin/bash\nnode $containerManager/application/source/entrypoint.js $*' > /usr/bin/containerCommand && \
+RUN printf '#!/bin/bash\nnode $containerManager/application/source/entrypoint.js $*' > /usr/bin/containerCommand && \
     chmod +x /usr/bin/containerCommand
 # Executed only on runtime.
 CMD containerCommand 
