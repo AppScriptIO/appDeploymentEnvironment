@@ -53,6 +53,7 @@ if(entrypointConfig) {
     }
 } else {
     console.log('Reached switch default - entrypointOption does not match any case/kind/option')
+    console.log(entrypointConfigList)
     // var docker = new Docker({socketPath: '/var/run/docker.sock'})
     // var container = docker.getContainer('4ba04235356e8f07d16f2bd2d4aa351a97d50eb3775d7043b63a29861412735a');
     // container.inspect(function (err, data) {
