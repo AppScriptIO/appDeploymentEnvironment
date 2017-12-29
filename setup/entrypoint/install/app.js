@@ -13,6 +13,9 @@ const projectFolder = configuration.directory.containerManagerRootFolder
 
     await initializeDatabaseData(connection)
     
+    // TODO: install `apt-get  install netcat`
+    // TODO: install docker cli, docker-machine tool.
+
     // Run linux commands on container image OS.
     console.log('Installing all necessary files.')
     let ShellscriptController = await createStaticInstanceClasses({

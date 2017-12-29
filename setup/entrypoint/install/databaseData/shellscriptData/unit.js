@@ -304,6 +304,144 @@ let data = [
         implementation: 'spawn'        
     },
 
+    /*
+     * Docker installation
+     */
+    { // https://docs.docker.com/engine/installation/linux/docker-ce/debian/#set-up-the-repository
+        key: '7e5e95f8-ba76-460d-8063-8a33ad13ede6',
+        label: {
+            name: 'Docker install: Install packages to allow apt to use a repository over HTTPS', 
+        },
+        command: 'apt-get',
+        argument: ['install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    { 
+        key: '21fbd3e6-065c-432c-8a51-485ad9b3cc6e',
+        label: {
+            name: 'Docker install: Add Docker’s official GPG key', 
+        },
+        command: 'curl',
+        argument: ['-fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | apt-key add -'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    { 
+        key: '6cf9256b-8d3b-44b6-b555-c3861f4efd56',
+        label: {
+            name: 'Docker install: add stable repository', 
+        },
+        command: 'add-apt-repository',
+        argument: ['"deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    { 
+        key: 'a3d03a70-c0ba-4350-95f7-41b7c84e7cec',
+        label: {
+            name: 'Docker install: Update the apt package index', 
+        },
+        command: 'apt-get',
+        argument: ['update'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    { 
+        key: '973db5dd-3737-44c1-aaaf-848db94097af',
+        label: {
+            name: 'Docker install: Install the latest version of Docker CE', 
+        },
+        command: 'apt-get',
+        argument: ['install -y docker-ce'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    { 
+        key: '5ed83cbf-9c98-426a-bee7-0a7a65e9e21b',
+        label: {
+            name: 'Docker install: verify installation', 
+        },
+        command: 'docker',
+        argument: ['-v'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+
+    /*
+     * Docker machine command line tool installation
+     */ 
+    {
+        key: '5d9b7d5c-d736-4850-9865-0770dddf4901',
+        label: {
+            name: 'Docker machine install: curl', 
+        },
+        command: 'curl',
+        argument: ['-L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    {
+        key: '0e74d0ca-2c41-41e3-b555-bcbef537ee24',
+        label: {
+            name: 'Docker machine install: chmod', 
+        },
+        command: 'chmod',
+        argument: ['+x /tmp/docker-machine'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    {
+        key: '61aec6d6-49dd-4d2c-9442-417654233956',
+        label: {
+            name: 'Docker machine install: cp', 
+        },
+        command: 'cp',
+        argument: ['/tmp/docker-machine /usr/local/bin/docker-machine'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    {
+        key: 'd5c70eec-04a2-4781-8fd5-2b95cc783123',
+        label: {
+            name: 'Docker machine install: Verify installation', 
+        },
+        command: 'docker-machine',
+        argument: ['-v'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+
 ];
 
 export default {

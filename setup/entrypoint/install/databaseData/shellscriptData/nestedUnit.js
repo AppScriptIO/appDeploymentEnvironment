@@ -33,6 +33,8 @@ let data = [
             { nestedUnit: '4f3590f7-efd4-4fd5-9b91-13d7bd846b1d', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: 'a80d1439-fa3b-44c8-8203-b26d590c14ae', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: '25f4a639-3fcf-4378-9c04-60cf245cd916', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
+            { nestedUnit: 'a7ec678d-655c-4ef1-97b5-81a22ac778c1', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
+            { nestedUnit: '4449dba2-e25c-4d50-b270-2d4876d6b7a3', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: 'x5f4a639-3fcf-4378-9c04-60cf245cd916', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: '43ba48c5-2dfe-4c31-bc8b-6862a6241a45', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
             { nestedUnit: 'e9353b5c-852d-480f-82e8-0e715ef02eb7', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null, insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7' } },
@@ -46,7 +48,6 @@ let data = [
     { key: 'e9353b5c-852d-480f-82e8-0e715ef02eb7', label: { name: 'nano' }, unit: 'abffa7d2-100f-4283-b03c-42f9c4a806a7', insertionPoint: [], children: [], },
     { key: 'f0a2790d-d5c9-4877-9181-609bbc0b98ed', label: { name: 'zip & unzip' }, unit: '9945d6d5-1f51-4ee0-8183-bbbb19b6ca80', insertionPoint: [], children: [], },
     { key: '97594d28-73d0-49df-8f3f-57241078acd3', label: { name: 'apt-utils' }, unit: '5bd9f5e6-f53f-48eb-8411-7bbe442b40c8', insertionPoint: [], children: [], },
-
 
     /**
      * Install docker-compose
@@ -65,6 +66,51 @@ let data = [
     { key: 'x5a2a235-e7e0-4534-a671-2d651a3a757d', label: { name: 'download docker compose latest version' }, unit: '16181bdc-16f2-4fb3-af1f-4fe301ab6a18', insertionPoint: [], children: [], },
     { key: 'x977f37d-0de6-4629-a684-c00b429b8f2a', label: { name: 'install downloaded docker-compose' }, unit: '1a4c633a-24a0-4255-834f-0181a6ce48f0', insertionPoint: [], children: [], },
     { key: 'x62497932-fc7b-4cb5-999a-ab02c82539b5', label: { name: 'print version' }, unit: '19f404a4-d0f6-41a5-9b66-0e5136c76ddb', insertionPoint: [], children: [], },
+
+    /**
+     * Install docker community edition
+     */
+    {
+        key: 'a7ec678d-655c-4ef1-97b5-81a22ac778c1', label: { name: 'Install docker community edition' },
+        insertionPoint: [
+            { key: '2299cc1e-238f-4fe5-9069-51351ded59a7', order: 1, executionType: 'chronological' },
+        ],
+        children: [
+            { nestedUnit: '5d8d5948-429b-4428-bcca-35cd776b5074', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: '90430b08-8e60-4fe4-888d-343bf7252aa5', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: 'e1cc5732-2224-4ce6-ad8f-0eb253db79ac', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: '45affadc-884c-49cf-a3dc-17727fefa07a', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: '5038b77a-f1a1-44d4-91fa-0dea514e4f33', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: '947a4f60-20a0-4076-8a4b-21cbaaba2cdc', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+        ],
+    },
+    { key: '5d8d5948-429b-4428-bcca-35cd776b5074', label: { name: 'necessary packages' }, unit: '7e5e95f8-ba76-460d-8063-8a33ad13ede6', insertionPoint: [], children: [], },
+    { key: '90430b08-8e60-4fe4-888d-343bf7252aa5', label: { name: 'Add Docker’s official GPG key' }, unit: '21fbd3e6-065c-432c-8a51-485ad9b3cc6e', insertionPoint: [], children: [], },
+    { key: 'e1cc5732-2224-4ce6-ad8f-0eb253db79ac', label: { name: 'add stable repository' }, unit: '6cf9256b-8d3b-44b6-b555-c3861f4efd56', insertionPoint: [], children: [], },
+    { key: '45affadc-884c-49cf-a3dc-17727fefa07a', label: { name: 'Update the apt package index' }, unit: 'a3d03a70-c0ba-4350-95f7-41b7c84e7cec', insertionPoint: [], children: [], },
+    { key: '5038b77a-f1a1-44d4-91fa-0dea514e4f33', label: { name: 'Install the latest version of Docker CE' }, unit: '973db5dd-3737-44c1-aaaf-848db94097af', insertionPoint: [], children: [], },
+    { key: '947a4f60-20a0-4076-8a4b-21cbaaba2cdc', label: { name: 'verify installation' }, unit: '5ed83cbf-9c98-426a-bee7-0a7a65e9e21b', insertionPoint: [], children: [], },
+
+    /**
+     * Install docker machine
+     */
+    {
+        key: '4449dba2-e25c-4d50-b270-2d4876d6b7a3', label: { name: 'Install docker machine' },
+        insertionPoint: [
+            { key: '2299cc1e-238f-4fe5-9069-51351ded59a7', order: 1, executionType: 'chronological' },
+        ],
+        children: [
+            { nestedUnit: '0fb8016e-fe4a-4d20-a097-c16b4f59930c', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: '34f360b2-1d6c-4768-b0bc-06ad8eb50875', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: 'd0e1ea0a-2484-4f7f-a635-8797ce895281', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+            { nestedUnit: '6652aa6c-3b86-47ea-9640-77d3d4d54d79', pathPointerKey: 'XYZ3', insertionPosition: { insertionPathPointer: null,  insertionPoint: '' } },
+        ],
+    },
+    { key: '0fb8016e-fe4a-4d20-a097-c16b4f59930c', label: { name: 'Docker machine install: curl' }, unit: '5d9b7d5c-d736-4850-9865-0770dddf4901', insertionPoint: [], children: [], },
+    { key: '34f360b2-1d6c-4768-b0bc-06ad8eb50875', label: { name: 'Docker machine install: chmod' }, unit: '0e74d0ca-2c41-41e3-b555-bcbef537ee24', insertionPoint: [], children: [], },
+    { key: 'd0e1ea0a-2484-4f7f-a635-8797ce895281', label: { name: 'Docker machine install: cp' }, unit: '61aec6d6-49dd-4d2c-9442-417654233956', insertionPoint: [], children: [], },
+    { key: '6652aa6c-3b86-47ea-9640-77d3d4d54d79', label: { name: 'Docker machine install: Verify installation' }, unit: 'd5c70eec-04a2-4781-8fd5-2b95cc783123', insertionPoint: [], children: [], },
+
 
     /**
      *  Linux packages 

@@ -25,6 +25,7 @@ dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCo
 build() {
     # docker-compose -f $dockerComposeFilePath pull containerDeploymentManagement
     DEPLOYMENT=selfManaged; 
+    entrypointOption=build
     
     # Check if docker image exists
     dockerImage=myuserindocker/deployment-environment:latest;
@@ -32,8 +33,7 @@ build() {
         dockerImage=node:latest
     fi
     echo "• dockerImage=$dockerImage"
-    
-    export dockerImage; export DEPLOYMENT;
+    export dockerImage; export DEPLOYMENT; export entrypointOption
     # run container manager
     docker-compose \
         -f ${dockerComposeFilePath} \
@@ -45,6 +45,23 @@ build() {
         -f ${dockerComposeFilePath} \
         --project-name appDeploymentEnvironment \
         down; 
+}
+
+run() { # for development to check the image or try to install packages on it before adding it to the code of the build.
+    OSUsername=$(whoami)
+    currentRelativeFilePath=$(dirname "$0")
+    # pwd - current working directory in host machine.
+    # currentRelativeFilePath - path relative to where shell was executed from.
+    # hostPath - will be used when calling docker-compose from inside 'manager' container to point to the host VM path rather than trying to mount from manager container. as mounting volumes from other container causes issues.
+    applicationHostPath="`pwd`/$currentRelativeFilePath"
+    echo host path: $applicationHostPath
+
+    docker run \
+        --volume $applicationHostPath:/project/application \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --env "hostPath=$applicationHostPath" \
+        myuserindocker/deployment-environment:latest \
+        sleep 100000
 }
 
 if [[ $# -eq 0 ]] ; then # if no arguments supplied, fallback to default
