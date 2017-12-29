@@ -20,7 +20,7 @@ dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCo
 # }
 
 # For managing the the development, build, & testing of this project.
-# USAGE: ./entrypoint.sh build entrypointConfigurationPath=/project/application/setup/entrypoint/configuration.js entrypointOption=build dockerImageTag=X
+# USAGE: ./entrypoint.sh build entrypointConfigurationPath=/project/application/setup/entrypoint/configuration.js entrypointOption=build dockerImageTag=X dockerhubUser=x dockerhubPass=x
 # USAGE for debugging: ./entrypoint.sh build entrypointConfigurationPath=./application/setup/entrypoint/configuration.js entrypointOption=run
 build() {
     # docker-compose -f $dockerComposeFilePath pull containerDeploymentManagement
@@ -33,6 +33,7 @@ build() {
         dockerImage=node:latest
     fi
     echo "• dockerImage=$dockerImage"
+
     export dockerImage; export DEPLOYMENT; export entrypointOption
     # run container manager
     docker-compose \
@@ -76,6 +77,8 @@ else
                 entrypointConfigurationPath)     entrypointConfigurationPath=${VALUE}; export entrypointConfigurationPath ;;
                 entrypointOption)         entrypointOption=${VALUE}; export entrypointOption ;;
                 dockerImageTag)         dockerImageTag=${VALUE}; export dockerImageTag ;;
+                dockerhubUser)         dockerhubUser=${VALUE}; export dockerhubUser ;;
+                dockerhubPass)         dockerhubPass=${VALUE}; export dockerhubPass ;;
                 *)
         esac
     done

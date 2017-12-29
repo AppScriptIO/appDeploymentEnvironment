@@ -127,6 +127,22 @@ let data = [
         implementation: 'spawn' 
     },
     {
+        key: '13cv6e28-9399-471c-a14f-a281ea086550',
+        label: {
+            name: 'docker login.'
+        },
+        command: 'docker',
+        argument: [
+            `login --username ${process.env.dockerhubUser} --password ${process.env.dockerhubPass}`
+        ],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2],
+            env: {}
+        },
+        implementation: 'spawn' 
+    },
+    {
         key: '93cv6e28-9399-471c-a14f-a281ea086550',
         label: {
             name: 'push image to docker hub latest.'

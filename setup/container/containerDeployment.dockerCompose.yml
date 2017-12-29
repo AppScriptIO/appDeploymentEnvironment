@@ -64,6 +64,9 @@ services:
             DEPLOYMENT: ${DEPLOYMENT}
             entrypointConfigurationPath: ${entrypointConfigurationPath}
             entrypointOption: ${entrypointOption}
+            dockerImageTag: ${dockerImageTag}
+            dockerhubUser: ${dockerhubUser}
+            dockerhubPass: ${dockerhubPass}
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ../../dependency:/project/dependency
