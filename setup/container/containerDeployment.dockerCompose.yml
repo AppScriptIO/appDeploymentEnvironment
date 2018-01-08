@@ -19,24 +19,40 @@ networks:
 # USAGE (from root directory): docker-compose -f <filePath> up <service>
 services:
     
-    dockerfile: # used as image, not meant to be run.
+    dockerfileDeploymentEnvironment: # used as image, not meant to be run.
         build: # change context to project's root folder.
             context: ../../../ # /project/application/setup/container/.dockerfile
             # dockerfile path relative to the context specified above.
-            dockerfile: ./application/setup/container/containerBuild.dockerFile
+            dockerfile: ./application/setup/container/deploymentEnvironment.imageBuild.dockerFile
             network: # add network for build runtime (dockerfile RUN commands).
                 "appdeploymentenvironment_build" # ISSUE - docker doesn't resolve the project name, it should be specified explicitly
             args: 
                 - DEPLOYMENT=${DEPLOYMENT}
                 - entrypointConfigurationPath=${entrypointConfigurationPath}
                 - entrypointOption=${entrypointOption}
+                - dockerImageName=${dockerImageName:-myuserindocker/deployment-environment}
                 - dockerImageTag=${dockerImageTag}
-                - dockerImageName="myuserindocker/deployment-environment"
         image: myuserindocker/deployment-environment:latest # name of built image cannot be uppercase.
-        # command: bash -c "sleep 100000"
+        depends_on:
+            - rethinkdb_build
+        networks:
+            - build
 
-    dockerfileBuild:
-        extends: dockerfile        
+    dockerfileContainerManager: # used as image, not meant to be run.
+        build: # change context to project's root folder.
+            context: ../../../ # /project/application/setup/container/.dockerfile
+            # dockerfile path relative to the context specified above.
+            dockerfile: ./application/setup/container/containerManager.imageBuild.dockerFile
+            network: # add network for build runtime (dockerfile RUN commands).
+                "appdeploymentenvironment_build" # ISSUE - docker doesn't resolve the project name, it should be specified explicitly
+            args: 
+                - DEPLOYMENT=${DEPLOYMENT}
+                - entrypointConfigurationPath=${entrypointConfigurationPath}
+                - entrypointOption=${entrypointOption}
+                - dockerImageName=${dockerImageName:-myuserindocker/container-manager}
+                - dockerImageTag=${dockerImageTag}
+        image: myuserindocker/container-manager:latest # name of built image cannot be uppercase.
+        # command: bash -c "sleep 100000"
         depends_on:
             - rethinkdb_build
         networks:
@@ -57,30 +73,27 @@ services:
 
     # Previously myuserindocker/deployment-environment:latest wad used by extending "dockerfile" service. which requires solving the issue of first build, where the image doesn't exist locally. 
     # either download last version from repo, or use direct build, or switch between docker-compose services for each case.
-    sharedForRunning: 
-        image: myuserindocker/deployment-environment:latest
+    containerDeploymentManagement: 
+        image: ${dockerImage:-myuserindocker/deployment-environment:latest}
         environment: # pass variable to the command executed & to the dockerfile when used.
             dockerImage: ${dockerImage}
             DEPLOYMENT: ${DEPLOYMENT}
             entrypointConfigurationPath: ${entrypointConfigurationPath}
             entrypointOption: ${entrypointOption}
             dockerImageTag: ${dockerImageTag}
+            dockerImageName: ${dockerImageName}
             dockerhubUser: ${dockerhubUser}
             dockerhubPass: ${dockerhubPass}
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ../../dependency:/project/dependency
-            - ../../:/project/application
-        command: bash -c "node /project/application/source/entrypoint.js"
-        working_dir: /project/application
-
-    containerDeploymentManagement:
-        extends: sharedForRunning
-        image: ${dockerImage:-myuserindocker/deployment-environment:latest}
         depends_on: 
             - rethinkdb_manager
         networks:
             - default
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ../../dependency:/project/dependency
+            - ../../:/project/application
+        working_dir: /project/application
+        command: bash -c "node /project/application/source/entrypoint.js"
 
     rethinkdb_manager:
         image: rethinkdb:latest

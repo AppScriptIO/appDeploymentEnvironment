@@ -20,13 +20,12 @@ dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCo
 # }
 
 # For managing the the development, build, & testing of this project.
-# USAGE: ./entrypoint.sh build entrypointConfigurationPath=/project/application/setup/entrypoint/configuration.js entrypointOption=build dockerImageTag=X dockerhubUser=x dockerhubPass=x
+# USAGE: ./entrypoint.sh build entrypointOption=<buildContainerManager/buildEnvironmentImage> dockerImageTag=X dockerhubUser=x dockerhubPass=x [dockerImageName=x]
 # USAGE for debugging: ./entrypoint.sh build entrypointConfigurationPath=./application/setup/entrypoint/configuration.js entrypointOption=run
+
 build() {
     # docker-compose -f $dockerComposeFilePath pull containerDeploymentManagement
     DEPLOYMENT=selfManaged; 
-    entrypointOption=build
-    
     # Check if docker image exists
     dockerImage=myuserindocker/deployment-environment:latest;
     if [[ "$(docker images -q $dockerImage 2> /dev/null)" == "" ]]; then 
@@ -34,7 +33,7 @@ build() {
     fi
     echo "• dockerImage=$dockerImage"
 
-    export dockerImage; export DEPLOYMENT; export entrypointOption
+    export dockerImage; export DEPLOYMENT;  
     # run container manager
     docker-compose \
         -f ${dockerComposeFilePath} \
@@ -46,6 +45,16 @@ build() {
         -f ${dockerComposeFilePath} \
         --project-name appDeploymentEnvironment \
         down; 
+}
+
+buildBothImage() { # TODO: check if this function works as planned.
+    entrypointOption=buildEnvironmentImage; export entrypointOption;
+    dockerImageTag=$dockerImageTag_environment; export dockerImageTag;
+    build
+
+    entrypointOption=buildContainerManager; export entrypointOption;
+    dockerImageTag=$dockerImageTag_manager; export dockerImageTag;
+    build
 }
 
 run() { # for development to check the image or try to install packages on it before adding it to the code of the build.
@@ -74,11 +83,16 @@ else
     for ARGUMENT in "${@:2}"; do # iterate over arguments, skipping the first.
         KEY=$(echo $ARGUMENT | cut -f1 -d=); VALUE=$(echo $ARGUMENT | cut -f2 -d=);
         case "$KEY" in
+
                 entrypointConfigurationPath)     entrypointConfigurationPath=${VALUE}; export entrypointConfigurationPath ;;
                 entrypointOption)         entrypointOption=${VALUE}; export entrypointOption ;;
+
                 dockerImageTag)         dockerImageTag=${VALUE}; export dockerImageTag ;;
+                dockerImageTag_environment)         dockerImageTag_environment=${VALUE}; export dockerImageTag_environment ;;
+                dockerImageTag_manager)         dockerImageTag_manager=${VALUE}; export dockerImageTag_manager ;;
                 dockerhubUser)         dockerhubUser=${VALUE}; export dockerhubUser ;;
                 dockerhubPass)         dockerhubPass=${VALUE}; export dockerhubPass ;;
+                dockerImageName)         dockerImageName=${VALUE}; export dockerImageName ;;
                 *)
         esac
     done

@@ -1,13 +1,18 @@
+console.log(`BUILD - Environment Image.`)
+
 process.env.SZN_DEBUG = true
 import path from 'path'
 const { spawn, spawnSync } = require('child_process')
 import rethinkDB from 'rethinkdb'
 import configuration from '../../configuration/configuration.js'
 let createStaticInstanceClasses = require('appscript/module/reusableNestedUnit')
-import initializeDatabaseData from './databaseData/initializeDatabaseData.js'
 import { lastImageTagInRepository } from './utilityFunction.js'
 
+process.env.dockerImageName = process.env.dockerImageName || 'myuserindocker/deployment-environment'
+
 ;(async function() {
+
+    const initializeDatabaseData = require('./databaseData/initializeDatabaseData.js') // insert data after setting default values
     let connection = await rethinkDB.connect({ host: 'rethinkdb', port: 28015 })
 
     await initializeDatabaseData(connection)
