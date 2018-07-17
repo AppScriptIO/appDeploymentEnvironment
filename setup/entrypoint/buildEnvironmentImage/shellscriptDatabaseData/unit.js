@@ -1,6 +1,50 @@
-const configuration = require('../../../../configuration/configuration.export.js')
+import configuration from '../../../configuration/configuration.js'
 
 let data = [
+    /**
+     * Install Docker Compose
+     */
+    { 
+        key: '66181bdc-16f2-4fb3-af1f-4fe301ab6a18',
+        label: {
+            name: 'Run this command to download the latest version of Docker Compose:', 
+        },
+        command: 'curl',
+        argument: ['-L https://github.com/docker/compose/releases/download/'+ configuration.buildEnvironmentImage.dockerComposeVersion +'/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    {
+        key: 'fa4c633a-24a0-4255-834f-0181a6ce48f0',
+        label: {
+            name: 'Apply executable permissions to the binary', 
+        },
+        command: 'chmod',
+        argument: ['+x /usr/local/bin/docker-compose;'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+    {
+        key: '49f404a4-d0f6-41a5-9b66-0e5136c76ddb',
+        label: {
+            name: 'docker-compose version'
+        },
+        command: 'docker-compose',
+        argument: ['--version'],
+        option: {
+            shell: true,
+            stdio: [0, 1, 2]
+        },
+        implementation: 'spawn'
+    },
+
+
 
     /**
      * run container
@@ -13,7 +57,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.directory.containerManagerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.managerApp.rootFolder}/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `up --force-recreate rethinkdb_build`
         ],
@@ -31,9 +75,9 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.directory.containerManagerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.managerApp.rootFolder}/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
-            `build dockerfileContainerManager`
+            `build containerManager_build`
         ],
         option: {
             // cwd: '/',
@@ -42,7 +86,6 @@ let data = [
             env: {
                 dockerImage: process.env.dockerImage,
                 DEPLOYMENT: 'imageBuild',
-                // entrypointConfigurationPath: process.env.entrypointConfigurationPath,
             }
         },
         implementation: 'spawn'
@@ -54,7 +97,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.directory.containerManagerRootFolder}/application/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.managerApp.rootFolder}/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `stop rethinkdb_build`
         ],

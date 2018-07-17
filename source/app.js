@@ -1,92 +1,66 @@
 import path from 'path'
-const filesystem = require('fs')
-const { spawn, spawnSync } = require('child_process')
-const configuration = require('../setup/configuration/configuration.export.js')
-
-// Log environment variables & shell command arguments
-console.log('• entrypointConfigurationPath:' + process.env.entrypointConfigurationPath)
-console.log('• entrypointOption:' + process.env.entrypointOption)
-process.argv = process.argv.slice(2)
-
-// managed webapp root folder
-const configurationFilename = 'configuration.js'
-const managedAppFolder = configuration.directory.managedApplicationRootFolder //project folder
-const managedAppDefault = {
-    configurationFolderPath: path.join(managedAppFolder, `application/setup/configuration`),
-    entrypointFolderPath: path.join(managedAppFolder, `application/setup/entrypoint`),
-}
-
-// set entrypoint option/command
-let entrypointName;
-if(process.argv[0]) {
-    console.log(`Arguments passed: ${process.argv.toString()}`)
-    entrypointName = process.argv.shift() // update global argv
-} else {
-    entrypointName = process.env.entrypointOption
-}
+import assert from 'assert'
+import filesystem from 'fs'
+import { spawn, spawnSync } from 'child_process'
+import configuration from '../setup/configuration/configuration.js'
+const   appDeploymentLifecycle = configuration.managerApp.dependency.appDeploymentLifecycle,
+        { installModule } = require(`${appDeploymentLifecycle}/utilityModule/installNodeJSModule.js`)
 
 // Set entrypoint configuration path
-let entrypointConfigList, absolutePath;
-if(process.env.entrypointConfigurationPath) {
-    absolutePath = process.env.entrypointConfigurationPath
-    entrypointConfigList = require(absolutePath)
-} else {
-    // if entrypoint object exists inside './application/setup/configuration/configuration.js'
-    if(filesystem.existsSync(`${managedAppDefault.configurationFolderPath}/${configurationFilename}`) && require(`${managedAppDefault.configurationFolderPath}/${configurationFilename}`)['entrypoint']) {
-        absolutePath = `${managedAppDefault.configurationFolderPath}/${configurationFilename}`
-        entrypointConfigList = require(absolutePath)['entrypoint']
-    } else if(filesystem.existsSync(`${managedAppDefault.entrypointFolderPath}/${configurationFilename}`)) { // else choose './application/setup/etnrypoint/configuration.js'
-        absolutePath = `${managedAppDefault.entrypointFolderPath}/${configurationFilename}`
-        entrypointConfigList = require(absolutePath)
-    }
-}
-console.log(`• Choosen entrypoint configuration path: ${absolutePath}`)
+let entrypointConfigList,
+    entrypointConfigurationKey = process.env.entrypointConfigurationKey, 
+    absolutePath;
 
-// get specific entrypoint option object
-let entrypointConfig = entrypointConfigList[entrypointName] || null
+// assert entrypoint env variables exist & entrypoint configuration objects/options exist.
+console.assert(entrypointConfigurationKey, '\x1b[41m%s\x1b[0m', '❌ entrypointConfigurationKey must be set.')
+console.assert(filesystem.existsSync(configuration.externalApp.configurationFilePath), '\x1b[41m%s\x1b[0m', `❌ Configuration file doesn't exist in ${configuration.externalApp.configurationFilePath}`)
+// load entrypoint configuration (entrypoint key - entrypoint path map)
+entrypointConfigList = (process.env.entrypointConfigurationPath) ? 
+    require(process.env.entrypointConfigurationPath)['entrypoint'] :
+    require(configuration.externalApp.configurationFilePath)['entrypoint'];
+console.assert(entrypointConfigList, '\x1b[41m%s\x1b[0m', `❌ "entrypoint" option in externalApp configuration must exist.`)
+
+// get specific entrypoint configuration option
+let entrypointConfig = entrypointConfigList[entrypointConfigurationKey]
 
 if(entrypointConfig) {
 
-    let modulePath // entrypoint module path
-    if(entrypointConfig['file']) {
-        if(path.isAbsolute(entrypointConfig['file'])) { // check if relative path or absolute.
-            modulePath = entrypointConfig['file']
-        } else {
-            modulePath = path.join(managedAppFolder, entrypointConfig['file'])
-        }
+    // Create entrypoint module path
+    let entrypointModulePath // entrypoint module path
+    if(entrypointConfig['path']) {
+        // check if is relative then build path.
+        entrypointModulePath = (!path.isAbsolute(entrypointConfig['path'])) ? 
+            path.join(configuration.externalApp.rootFolder, entrypointConfig['path']) : 
+            entrypointConfig['path'];
     } else {
         // default entrypoint file location if no file path present in configuration file.
-        modulePath = path.join(managedAppDefault.entrypointFolderPath, `${entrypointName}`) // .js file or folder module.
+        entrypointModulePath = path.join(configuration.externalApp.entrypointFolder, `${entrypointConfigurationKey}`) // .js file or folder module.
     }
     
-    // install node_modules if not present in case a folder is being passed.
+    // install node_modules for entrypoint module if not present in case a folder is being passed.
     // ISSUE - installing node_modules of and from within running module, will fail to load the newlly created moduules as node_modules path was already read by the nodejs application.
-    function installModule({ currentDirectory }) { spawnSync('yarn', ["install --pure-lockfile --production=false"], { cwd: currentDirectory, shell: true, stdio:[0,1,2] }) }
     let directory;
     // Check if javascript module is a module file or directory module.
-    if(filesystem.existsSync(modulePath) && filesystem.lstatSync(modulePath).isDirectory()) {
-        directory = modulePath
-    } else if(filesystem.existsSync(`${modulePath}.js`) || filesystem.existsSync(modulePath) && filesystem.lstatSync(modulePath).isFile()) {
-        directory = modulePath.substr(0, modulePath.lastIndexOf("/"))
+    if(filesystem.existsSync(entrypointModulePath) && filesystem.lstatSync(entrypointModulePath).isDirectory()) {
+        directory = entrypointModulePath
+    } else if(filesystem.existsSync(`${entrypointModulePath}.js`) || filesystem.existsSync(entrypointModulePath) && filesystem.lstatSync(entrypointModulePath).isFile()) {
+        directory = entrypointModulePath.substr(0, entrypointModulePath.lastIndexOf("/")) // get directory path from filepath.
     }
-    // install modules
     let isNodeModuleInstallExist = filesystem.existsSync(`${directory}/node_modules`)
     if (!isNodeModuleInstallExist) {
-        installModule({ currentDirectory: directory })
+        installModule({ currentDirectory: directory }) // install modules
     }
     
+    // run entrypoint module.
     try {
-        require(modulePath)
+        console.log('\x1b[45m%s\x1b[0m \x1b[2m\x1b[3m%s\x1b[0m', `Module:`, `Running NodeJS entrypoint module`)
+        console.log(`\t\x1b[2m\x1b[3m%s\x1b[0m \x1b[95m%s\x1b[0m`, `File path:`, `${entrypointModulePath}`)
+        require(entrypointModulePath)
     } catch (error) {
         throw error
     }
 
 } else {
-    console.log(`Reached switch default - "${entrypointName}" entrypointOption does not match any case/kind/option`)
+    console.log(`Error - Reached switch default as entrypointConfigurationKey "${entrypointConfigurationKey}" does not match any case/kind/option`)
     console.log(entrypointConfigList)
-    // var docker = new Docker({socketPath: '/var/run/docker.sock'})
-    // var container = docker.getContainer('4ba04235356e8f07d16f2bd2d4aa351a97d50eb3775d7043b63a29861412735a');
-    // container.inspect(function (err, data) {
-    //     console.log(data);
-    // });
 }

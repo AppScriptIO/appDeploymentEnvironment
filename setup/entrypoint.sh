@@ -1,92 +1,94 @@
 #!/usr/bin/env bash
-##
- # USAGE: 
- # ./entrypoint.sh [build|run] entrypointConfigurationPath=./entrypoint/configuration.js entrypointOption=[install|build|...]
-##
-
-# : ${DEPLOYMENT:=selfManaged}; export DEPLOYMENT # set variable only if if is unset or empty string.
-
-currentFilePath=$(dirname "$0")
-dockerComposeFilePath="${currentFilePath}/container/containerDeployment.dockerCompose.yml"
-
-### DOESN'T WORK ANYMORE - as the dockerfile used to build the image, relies on a specific directory structure, which in the "containerManagement" is reorganized.
-### Now builds are made only through nodejs app, not directly through docker-compose build.
-# # Initial build - used for building the container through calling docker-compose tool directly, rather than interacting with the docker nodejs management tool (docker API). As the manager nodejs container relies on this docker image to run.
-# # USAGE: ./entrypoint.sh build entrypointConfigurationPath=./entrypoint/configuration.js entrypointOption=install
-# build() {
-#     # --no-cache can be used.
-#     DEPLOYMENT=containerManager; export DEPLOYMENT;    
-#     docker-compose -f $dockerComposeFilePath build --no-cache dockerfile
-# }
-
 # For managing the the development, build, & testing of this project.
-# USAGE: ./entrypoint.sh build entrypointOption=<buildContainerManager/buildEnvironmentImage> dockerImageTag=X dockerhubUser=x dockerhubPass=x [dockerImageName=x]
-# USAGE for debugging: ./entrypoint.sh build entrypointConfigurationPath=./application/setup/entrypoint/configuration.js entrypointOption=run
+# USAGE: 
+# • ./entrypoint.sh [build|run] entrypointConfigurationPath=./entrypoint/configuration.js entrypointConfigurationKey=[run | install | build | buildContainerManager/buildEnvironmentImage ] dockerImageTag=X dockerhubUser=x dockerhubPass=x [dockerImageName=x]
+
+shellsciptFilePath="${0}"
+message_prefix="\e[3m\e[2m•[entrypoint.sh shell script]:\e[0m\n"
+message_noCommand="No command argument passed. Please choose either \"run\" or \"build\""
+message_title="Shellscript:"; 
+echo -e "\e[33m\e[1m\e[7m${message_title}\e[0m"
+echo -e "\e[2m\e[3m\tFile path (relative to execution):\e[0m \e[33m${shellsciptFilePath}\e[0m"
+
+hostOSUsername=$(whoami)
+currentScriptFilePath=$(dirname "$0") # currentScriptFilePath - path of this shell script, relative to where shell was executed from.
+applicationHostPath="`pwd`/$currentScriptFilePath/.." # applicationHostPath - The path of the host machine that is accesible from inside the virtual container. will be used when calling docker-compose from inside 'manager' container to point to the host VM path rather than trying to mount from manager container. as mounting volumes from other container causes issues.
+dockerComposeFilePath="${currentScriptFilePath}/container/containerDeployment.dockerCompose.yml"
+echo -e "${message_prefix} Application host path inside container: $applicationHostPath"
 
 build() {
-    # docker-compose -f $dockerComposeFilePath pull containerDeploymentManagement
-    DEPLOYMENT=selfManaged; 
-    # Check if docker image exists
-    dockerImage=myuserindocker/deployment-environment:latest;
-    if [[ "$(docker images -q $dockerImage 2> /dev/null)" == "" ]]; then 
-        dockerImage=node:latest
-    fi
-    echo "• dockerImage=$dockerImage"
+    echo -e "${message_prefix}\e[33mƒ build\e[0m"
 
-    export dockerImage; export DEPLOYMENT;  
+    # pull previously built image
+    # docker-compose -f $dockerComposeFilePath pull containerDeploymentManagement
+    # docker pull myuserindocker/deployment-environment:latest
+
+    # Check if docker image exists
+    # dockerImage=myuserindocker/deployment-environment:latest;
+    # if [[ "$(docker images -q $dockerImage 2> /dev/null)" == "" ]]; then 
+    #     dockerImage=node:latest
+    # fi; 
+    # export dockerImage;
+    # echo -e "${message_prefix} dockerImage=$dockerImage";
+
+    export applicationHostPath;
+
+    title="> docker-compose up";
+    echo -e "\n\e[33m\e[1m\e[7m${title}\e[0m"
+    serviceName="containerManager_run"
+    projectName="appDeploymentEnvironment"
+    echo -e "\t\e[3m\e[2myml file path:\e[0m \e[33m${dockerComposeFilePath}\e[0m"
+    echo -e "\t\e[3m\e[2mService name:\e[0m \e[33m${serviceName}\e[0m"
+    echo -e "\t\e[3m\e[2mService name:\e[0m \e[33m${projectName}\e[0m"
     # run container manager
     docker-compose \
         -f ${dockerComposeFilePath} \
-        --project-name appDeploymentEnvironment \
-        up --force-recreate --no-build --abort-on-container-exit containerDeploymentManagement;
+        --project-name $projectName \
+        up --force-recreate --no-build --abort-on-container-exit $serviceName;
 
+    title="> docker-compose down"
+    echo -e "\n\e[33m\e[1m\e[7m${title}\e[0m \e[3m\e[2m(stop  running containers) output\e[0m"
+    echo -e "\t\e[3m\e[2myml file path:\e[0m \e[33m${dockerComposeFilePath}\e[0m"
+    echo -e "\t\e[3m\e[2mService name:\e[0m \e[33m${projectName}\e[0m"
     # stop and remove containers related to project name.
     docker-compose \
         -f ${dockerComposeFilePath} \
-        --project-name appDeploymentEnvironment \
+        --project-name $projectName \
         down; 
 }
 
-buildBothImage() { # TODO: check if this function works as planned.
-    entrypointOption=buildEnvironmentImage; export entrypointOption;
-    dockerImageTag=$dockerImageTag_environment; export dockerImageTag;
-    build
+run() { # for development to check the image or try to install packages on it before writting it to the code of the build.
+    echo -e "${message_prefix}\e[33mƒ run\e[0m"
 
-    entrypointOption=buildContainerManager; export entrypointOption;
-    dockerImageTag=$dockerImageTag_manager; export dockerImageTag;
-    build
-}
-
-run() { # for development to check the image or try to install packages on it before adding it to the code of the build.
-    OSUsername=$(whoami)
-    currentRelativeFilePath=$(dirname "$0")
-    # pwd - current working directory in host machine.
-    # currentRelativeFilePath - path relative to where shell was executed from.
-    # hostPath - will be used when calling docker-compose from inside 'manager' container to point to the host VM path rather than trying to mount from manager container. as mounting volumes from other container causes issues.
-    applicationHostPath="`pwd`/$currentRelativeFilePath"
-    echo host path: $applicationHostPath
-
+    echo -e "\e[3m\e[2m > docker run\e[0m"
+    image="myuserindocker/deployment-environment:latest"
+    command="node /project/application/source/entrypoint.js run"
+    echo -e "\t\e[3m\e[2mimage:\e[0m myuserindocker/deployment-environment:latest"
+    echo -e "\t\e[3m\e[2mcommand:\e[0m node /project/application/source/entrypoint.js run"
     docker run \
-        --volume $applicationHostPath:/project/application \
         --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume $applicationHostPath:/project/application \
+        --volume $applicationHostPath:/project/appDeploymentEnvironment \
         --env "hostPath=$applicationHostPath" \
-        myuserindocker/deployment-environment:latest \
-        sleep 100000
+        --env "entrypointConfigurationPath=/project/application/setup/entrypoint/configuration.js" \
+        $image \
+        $command
 }
 
-if [[ $# -eq 0 ]] ; then # if no arguments supplied, fallback to default
-    echo 'Shell Script • No arguments passed.'
-    run
-else
+### Export command arguments
+if [[ $# -eq 0 ]] ; then # if no arguments supplied, fallback to default command.
+    echo -e "\n${message_prefix}\e[97m\e[41m${message_noCommand}\e[0m"
+    exit 1
+else # Export arguments & execute first command.
+    echo -e "${message_prefix} Exporting arguments' values."
 
-    # Export arguments  
     for ARGUMENT in "${@:2}"; do # iterate over arguments, skipping the first.
         KEY=$(echo $ARGUMENT | cut -f1 -d=); VALUE=$(echo $ARGUMENT | cut -f2 -d=);
         case "$KEY" in
 
+                entrypointConfigurationKey)         entrypointConfigurationKey=${VALUE}; export entrypointConfigurationKey ;;
                 entrypointConfigurationPath)     entrypointConfigurationPath=${VALUE}; export entrypointConfigurationPath ;;
-                entrypointOption)         entrypointOption=${VALUE}; export entrypointOption ;;
-
+                externalAppBasePath)     externalAppBasePath=${VALUE}; export externalAppBasePath ;;
                 dockerImageTag)         dockerImageTag=${VALUE}; export dockerImageTag ;;
                 dockerImageTag_environment)         dockerImageTag_environment=${VALUE}; export dockerImageTag_environment ;;
                 dockerImageTag_manager)         dockerImageTag_manager=${VALUE}; export dockerImageTag_manager ;;
@@ -97,13 +99,14 @@ else
         esac
     done
 
-    if [[ $1 != *"="* ]]; then # if first argument is a command, rather than a key-value pair.
-        echo 'Shell Script • Command as argument passed.'
+    if [[ $1 != *"="* ]]; then # if first argument is a command, rather than a key-value pair. e.g. ./setup/entrypoint.sh <command> <key>=<value> <key>=<value>
+        echo -e "${message_prefix} Command as argument passed, executing passed command as function."
         # run first argument as function.
         $@ # Important: call arguments verbatim. i.e. allows first argument to call functions inside file. So that it could be called as "./setup/entrypoint.sh <functionName>".
-    else
-        echo 'Shell Script • Key-Value arguments passed.'
-        run
+    else # if all arguments are in pattern of <key>=<value> pairs.
+        message="All passed arguments are Key-Value pairs, ${message_noCommand}"
+        echo -e "\n${message_prefix}\e[97m\e[41m${message}\e[0m"
+        exit 1
     fi
 
 fi

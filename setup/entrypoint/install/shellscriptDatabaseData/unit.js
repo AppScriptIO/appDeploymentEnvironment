@@ -1,3 +1,5 @@
+import configuration from '../../../../configuration/configuration.js'
+
 let data = [
     /**
      * Linux update and install
@@ -51,7 +53,7 @@ let data = [
             name: 'Run this command to download the latest version of Docker Compose:', 
         },
         command: 'curl',
-        argument: ['-L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose'],
+        argument: [`-L https://github.com/docker/compose/releases/download/${configuration.buildEnvironmentImage.dockerComposeVersion}/docker-compose-\`uname -s\`-\`uname -m\` -o /usr/local/bin/docker-compose`],
         option: {
             shell: true,
             stdio: [0, 1, 2]
@@ -395,7 +397,7 @@ let data = [
             name: 'Docker machine install: curl', 
         },
         command: 'curl',
-        argument: ['-L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine'],
+        argument: [`-L https://github.com/docker/machine/releases/download/v${configuration.buildEnvironmentImage.dockerMachineVersion}/docker-machine-\`uname -s\`-\`uname -m\` >/tmp/docker-machine`],
         option: {
             shell: true,
             stdio: [0, 1, 2]

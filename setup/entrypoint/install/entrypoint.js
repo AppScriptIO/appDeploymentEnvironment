@@ -1,15 +1,34 @@
-const { spawn, spawnSync } = require('child_process')
-const path = require('path')
-const moduleSystem = require('module')
-const filesystem = require('fs');
+import { spawn, exec } from 'child_process'
+import path from 'path'
+import shell from 'shelljs'
+import rethinkDB from 'rethinkdb'
+import createStaticInstanceClasses from 'appscript/module/reusableNestedUnit'
+import initializeDatabaseData from '../utilityFunction/initializeDatabaseData.js'
+import configuration from '../../configuration/configuration.js'
+import { interfaceDatabaseName as databaseData } from './shellscriptDatabaseData'
 
-// // add root path (app base path) to the resolved module paths.
-// // Define server base path. Hackish way to make sure the path is always consistent. Base path in Nodejs is where the closest parent node_modules is located to the initiated js script.
-// process.env.NODE_PATH = `${process.env.NODE_PATH || ''}:${nodeModuleFolderPath}`.replace(/(^\:+)/, '')
-// console.log(`• Node additional module resolution paths: ${process.env.NODE_PATH}`)
-// moduleSystem._initPaths()  
+;(async function() {
+    let connection = await rethinkDB.connect({ host: 'rethinkdb', port: 28015 })
 
-// Run app
-require('./app.js')
-
-
+    await initializeDatabaseData({ databaseData, connection })
+    
+    // TODO: install `apt-get  install netcat`
+    // TODO: install docker cli, docker-machine tool.
+    
+    // Run linux commands on container image OS.
+    console.log('Installing all necessary files.')
+    let ShellscriptController = await createStaticInstanceClasses({
+        implementationType: 'Shellscript',
+        cacheName: true, 
+        rethinkdbConnection: connection
+    })
+    // Initialize database data from files.
+    let shellscriptController = await ShellscriptController.createContext({
+        // - probably these are used for passing variables to the executed functions.
+        appBasePath: configuration.externalApp.rootFolder,
+        shellscriptPath: path.join(configuration.managerApp.dependency.appDeploymentLifecycle, 'packageShellScript')
+    })
+    await shellscriptController.initializeNestedUnit({ nestedUnitKey: '8762516e-26fe-444b-b72f-dce374a33266' })
+    
+    connection.close()
+})()
