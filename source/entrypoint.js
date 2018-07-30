@@ -18,7 +18,7 @@ console.log(`\t${style.italic}%s${style.default} ${style.message}%s${style.defau
 const filesystem = require('fs'),
       path = require('path'),
       jsEntrypointPath = path.dirname(require.main.filename),
-      configuration = require('../setup/configuration/configuration.js'),
+      configuration = require('@setup/configuration/configuration.js'),
       appDeploymentLifecycle = configuration.managerApp.dependency.appDeploymentLifecycle,
       babelJSTranspilerPath = `${appDeploymentLifecycle}/babel_javascriptTranspilation.js/`,
       { installModule } = require(`${appDeploymentLifecycle}/utilityModule/installNodeJSModule.js`),
