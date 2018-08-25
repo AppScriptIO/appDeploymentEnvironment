@@ -1,7 +1,6 @@
 const managerApp = require('./managerApp').run
 
 if (require.main === module) { // if executed directly from the command-line
-    console.log(managerApp)
     managerApp().catch(error => {
       console.error(error);
       process.exitCode = 1;

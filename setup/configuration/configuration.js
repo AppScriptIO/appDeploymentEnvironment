@@ -16,20 +16,20 @@ module.exports = {
     projectPath,
     script: {
         hostMachine: {
-            path: './setup/script/hostMachineStartupScript' // relative to applicaiton repository root.
+            path: './setup/script/hostMachine' // relative to applicaiton repository root.
         },
         container: [ // entrypoint configuration map, paths are relative to external app.
             {
                 key: 'install',
-                path: './setup/script/containerManagerScript/setupOSEnvironmentContainerScript',
+                path: './setup/script/container/setupOSEnvironmentContainerScript',
             },
             {
                 key: 'buildEnvironmentImage',
-                path: './setup/script/containerManagerScript/buildEnvironmentImage',
+                path: './setup/script/container/buildEnvironmentImage',
             },
             // {
             //     key: 'buildContainerManager',
-            //     path: './setup/entrypoint/buildContainerManager',
+            //     path: './setup/script/container/buildContainerManager',
             // },
             {
                 key: 'sleep',

@@ -8,7 +8,7 @@ async function run() {
     // Transpilation - babelJSCompiler
     require('@dependency/javascriptTranspilation')({ babelConfigurationFile: 'serverRuntime.BabelConfig.js' })
     // Setup environment 
-    await require('../../setup/script/appRuntimeScript/runtimeSetupEnvironment.js').setupEnvironment()
+    await require('../../setup/script/appRuntime/runtimeSetupEnvironment.js').setupEnvironment()
     // Run
     require('./app.js')
 }
