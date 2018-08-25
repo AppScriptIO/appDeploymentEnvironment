@@ -13,3 +13,10 @@ directory struction for:
                 /application
                 /dependency
     (because the production apps that are going to use it will have inside the project folder their own application and dependency folders.)
+
+
+• The manager app is executed inside a container for the following reasons: 
+    - Ease the development of the Nodejs manager app for a specific OS environment.
+    - Not to pollute the host OS environment.
+    - For a more secure execution, preventing bugs from affecting the host OS.
+    - To gain the benifit of controlled container with ability to manipulate folder structure with volumes and create symlinks easily. 

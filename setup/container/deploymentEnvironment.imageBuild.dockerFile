@@ -6,7 +6,7 @@ MAINTAINER SZN
 ARG PROJECT="/project" 
     ENV PROJECT=${PROJECT}
 # ContainerManager
-ARG mangerApp_repositoryPath="$PROJECT/appDeploymentEnvironment" 
+ARG mangerApp_repositoryPath="$PROJECT/managerApp" 
     ENV mangerApp_repositoryPath ${mangerApp_repositoryPath}
 
 # Copy files and make them executable.
@@ -23,7 +23,7 @@ ARG entrypointConfigurationPath=/project/application/setup/entrypoint/configurat
     
 # Environment image 'deployment-environment'
     ENV entrypointConfigurationKey install
-    ENV externalAppBasePath /project/appDeploymentEnvironment
+    ENV externalAppBasePath /project/managerApp
 ARG entrypointConfigurationKey=buildEnvironmentImage
     ENV entrypointConfigurationKey ${entrypointConfigurationKey}
 ARG dockerImageTag
