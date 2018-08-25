@@ -1,0 +1,11 @@
+{
+    "main": "./source/entrypoint.js",
+    "name": "@dependency/appDeploymentEnvironment",
+    "workspaces": [
+        "source",
+        "setup",
+        "./setup/script/hostMachineStartupScript/*",
+        "./setup/script/containerScript/*"
+    ],
+    "private": true
+  }

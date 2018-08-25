@@ -1,28 +1,45 @@
 const path = require('path')
 const   projectPath = "/project",
-        managerAppRootFolder = `${projectPath}/appDeploymentEnvironment`,        
-        externalAppRootFolder = process.env.externalAppBasePath || `${projectPath}/application`,
-        externalAppAppDeploymentLifecycle = `${externalAppRootFolder}/dependency/appDeploymentLifecycle`
+        managerAppRootFolder = `${projectPath}/managerApp`,        
+        externalAppRootFolder = process.env.externalAppBasePath || `${projectPath}/application`;
+
+// try to find module in externalApp
+let externalAppAppDeploymentLifecycle;
+try {
+    externalAppAppDeploymentLifecycle = path.dirname( require.resolve(`@dependency/appDeploymentLifecycle/package.json`, { paths: [ externalAppRootFolder ] }) )  
+} catch (error) {
+    // console.log(`• Cannot find appDeploymentLifecycle module in external app.`)
+    externalAppAppDeploymentLifecycle = null
+} 
 
 module.exports = {
     projectPath,
-    entrypoint: { // entrypoint configuration map, paths are relative to external app.
-        install: {
-            path: './setup/entrypoint/install',
-        },
-        buildEnvironmentImage: {
-            path: './setup/entrypoint/buildEnvironmentImage',
-        },
-        // buildContainerManager: {
-        //     path: './setup/entrypoint/buildContainerManager',
-        // },
-        sleep: {
-            path: `${externalAppAppDeploymentLifecycle}/entrypoint/sleep`,
+    script: {
+        hostMachine: {
+            path: './setup/script/hostMachineStartupScript' // relative to applicaiton repository root.
         }
     },
+    entrypoint: [ // entrypoint configuration map, paths are relative to external app.
+        {
+            key: 'install',
+            path: './setup/script/containerManagerScript/setupOSEnvironmentContainerScript',
+        },
+        {
+            key: 'buildEnvironmentImage',
+            path: './setup/script/containerManagerScript/buildEnvironmentImage',
+        },
+        // {
+        //     key: 'buildContainerManager',
+        //     path: './setup/entrypoint/buildContainerManager',
+        // },
+        {
+            key: 'sleep',
+            path: (externalAppAppDeploymentLifecycle) ? `${externalAppAppDeploymentLifecycle}/containerScript/sleep` : null,
+        }
+    ],
     externalApp: {
         rootFolder: externalAppRootFolder,
-        entrypointFolder: `${externalAppRootFolder}/setup/entrypoint`,
+        entrypointFolder: `${externalAppRootFolder}/setup/script/containerManagerScript`,
         configurationFilePath: `${externalAppRootFolder}/setup/configuration/configuration.js`,
         dependency: {
             appDeploymentLifecycle: externalAppAppDeploymentLifecycle
@@ -31,7 +48,7 @@ module.exports = {
     managerApp: {
         rootFolder: managerAppRootFolder,
         dependency: {
-            appDeploymentLifecycle: `${managerAppRootFolder}/dependency/appDeploymentLifecycle`,
+            appDeploymentLifecycle: `${managerAppRootFolder}/dependency/gitSubmodule/appDeploymentLifecycle`,
         }
     },
     buildEnvironmentImage: {

@@ -25,11 +25,11 @@ services:
         networks:
             - run
         volumes:
-            - ../../:/project/appDeploymentEnvironment
+            - ../../:/project/managerApp
             - ../../:/project/application # the application to be run is the same repository of manager repository.
             - /var/run/docker.sock:/var/run/docker.sock
         working_dir: /project/application
-        command: bash -c "node /project/appDeploymentEnvironment/source/entrypoint.js"
+        command: bash -c "node /project/managerApp/source/entrypoint.js"
     "rethinkdb_run":
         image: rethinkdb:latest
         # ports:
@@ -37,7 +37,7 @@ services:
         working_dir: /
         # volumes:
         #     # volume inside docker-machine not through Windows volume. because it causes problems otherwise.
-        #     - /mnt/datadisk-1/appDeploymentEnvironment/rethinkdbData_manager:/data/rethinkdb_data/
+        #     - /mnt/datadisk-1/managerApp/rethinkdbData_manager:/data/rethinkdb_data/
         networks:
             "run":
                 aliases:
@@ -49,7 +49,7 @@ services:
             # dockerfile path relative to the context specified above.
             dockerfile: ./setup/container/deploymentEnvironment.imageBuild.dockerFile
             network: # add network for build runtime (dockerfile RUN commands).
-                "appdeploymentenvironment_build" # ISSUE - docker doesn't resolve the project name, it should be specified explicitly
+                "managerApp_build" # ISSUE - docker doesn't resolve the project name, it should be specified explicitly
             args: 
                 - DEPLOYMENT=${DEPLOYMENT}
                 - entrypointConfigurationKey=${entrypointConfigurationKey}
@@ -70,7 +70,7 @@ services:
         working_dir: /
         # volumes:
         #     # volume inside docker-machine not through Windows volume. because it causes problems otherwise.
-        #     - /mnt/datadisk-1/appDeploymentEnvironment/rethinkdbData_build:/data/rethinkdb_data/
+        #     - /mnt/datadisk-1/managerApp/rethinkdbData_build:/data/rethinkdb_data/
         networks:
             build:
                 aliases:
