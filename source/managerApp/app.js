@@ -9,7 +9,7 @@ console.log(`\t${style.italic}%s${style.default} ${style.message}%s${style.defau
 let nodeCommand = process.argv.slice(2) // remove first 2 commands - "<binPath>/node", "<path>/entrypoint.js"
 
 import configuration from '@root/setup/configuration/configuration.js'
-import { executeEntrypointConfiguration, cliInterface } from './module/executeEntrypointConfiguration.js'
+import { executeEntrypointConfiguration, cliInterface } from './algorithm/executeEntrypointConfiguration.js'
 import { parseKeyValuePairSeparatedBySymbolFromArray, combineKeyValueObjectIntoString } from '@dependency/parseKeyValuePairSeparatedBySymbol'
 
 console.log(`\x1b[2m\x1b[3m%s\x1b[0m \n\t %s \n\t %s`, `• configuration:`, 

@@ -17,26 +17,26 @@ module.exports = {
     script: {
         hostMachine: {
             path: './setup/script/hostMachineStartupScript' // relative to applicaiton repository root.
-        }
+        },
+        container: [ // entrypoint configuration map, paths are relative to external app.
+            {
+                key: 'install',
+                path: './setup/script/containerManagerScript/setupOSEnvironmentContainerScript',
+            },
+            {
+                key: 'buildEnvironmentImage',
+                path: './setup/script/containerManagerScript/buildEnvironmentImage',
+            },
+            // {
+            //     key: 'buildContainerManager',
+            //     path: './setup/entrypoint/buildContainerManager',
+            // },
+            {
+                key: 'sleep',
+                path: (externalAppAppDeploymentLifecycle) ? `${externalAppAppDeploymentLifecycle}/containerScript/sleep` : null,
+            }
+        ]
     },
-    entrypoint: [ // entrypoint configuration map, paths are relative to external app.
-        {
-            key: 'install',
-            path: './setup/script/containerManagerScript/setupOSEnvironmentContainerScript',
-        },
-        {
-            key: 'buildEnvironmentImage',
-            path: './setup/script/containerManagerScript/buildEnvironmentImage',
-        },
-        // {
-        //     key: 'buildContainerManager',
-        //     path: './setup/entrypoint/buildContainerManager',
-        // },
-        {
-            key: 'sleep',
-            path: (externalAppAppDeploymentLifecycle) ? `${externalAppAppDeploymentLifecycle}/containerScript/sleep` : null,
-        }
-    ],
     externalApp: {
         rootFolder: externalAppRootFolder,
         entrypointFolder: `${externalAppRootFolder}/setup/script/containerManagerScript`,

@@ -79,8 +79,8 @@ export function cliInterface({
     console.assert(filesystem.existsSync(entrypointConfigurationPath), '\x1b[41m%s\x1b[0m', `❌ Configuration file doesn't exist in ${entrypointConfigurationPath}`)
 
     // load entrypoint configuration and check for 'entrypoint' key (entrypoint key holds object with entrypoint information like file path mapping)
-    let entrypointConfigList = require(entrypointConfigurationPath)['entrypoint']
-    console.assert(entrypointConfigList, '\x1b[41m%s\x1b[0m', `❌ "entrypoint" option (config.entrypoint) in externalApp configuration must exist.`)
+    let entrypointConfigList = require(entrypointConfigurationPath)['script']['container']
+    console.assert(entrypointConfigList, '\x1b[41m%s\x1b[0m', `❌ config['script']['container'] options (config.entrypoint) in externalApp configuration must exist.`)
 
     // get specific entrypoint configuration option (entrypoint.configKey)
     let entrypointConfig = entrypointConfigList.find(config => config.key == entrypointConfigurationKey)
