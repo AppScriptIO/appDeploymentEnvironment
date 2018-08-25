@@ -19,6 +19,5 @@
         "@dependency/parseKeyValuePairSeparatedBySymbol": "https://github.com/AppScriptIO/parseKeyValuePairSeparatedBySymbol",
         "@dependency/JSModuleTypeCheck": "https://github.com/AppScriptIO/JSModuleTypeCheck",
         "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation"
-    
-      }    
-  }
+    }    
+}
