@@ -69,7 +69,7 @@ export function cliInterface({
         envrironmentArgument.entrypointConfigurationKey ||
         nodeCommandArgument.entrypointConfigurationKey
     console.assert(entrypointConfigurationKey, '\x1b[41m%s\x1b[0m', '❌ entrypointConfigurationKey must be set.') // assert entrypoint env variables exist
-
+    
     entrypointConfigurationPath = 
         entrypointConfigurationPath ||
         envrironmentArgument.entrypointConfigurationPath || 
@@ -77,13 +77,13 @@ export function cliInterface({
         configuration.externalApp.configurationFilePath // default configuration path
     // assret entrypoint configuration objects/options exist.
     console.assert(filesystem.existsSync(entrypointConfigurationPath), '\x1b[41m%s\x1b[0m', `❌ Configuration file doesn't exist in ${entrypointConfigurationPath}`)
-
+    
     // load entrypoint configuration and check for 'entrypoint' key (entrypoint key holds object with entrypoint information like file path mapping)
     let entrypointConfigList = require(entrypointConfigurationPath)['entrypoint']
     console.assert(entrypointConfigList, '\x1b[41m%s\x1b[0m', `❌ "entrypoint" option (config.entrypoint) in externalApp configuration must exist.`)
 
     // get specific entrypoint configuration option (entrypoint.configKey)
-    let entrypointConfig = entrypointConfigList.find(config => config.key == entrypointConfigurationKey)
+    let entrypointConfig = entrypointConfigList[entrypointConfigurationKey]
     // assert entrypointConfig exist
     if(!entrypointConfig) {
         console.log(`entrypointConfigList: \n`, entrypointConfigList)
