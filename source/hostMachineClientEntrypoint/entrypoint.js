@@ -10,8 +10,8 @@ export function runManagerAppInContainerWithClientApp({
     let image = 'node:latest',
         processCommand = 'docker',
         commandArgument = process.argv.slice(3), // remove first 2 commands - "<binPath>/node", "<path>/entrypoint.js" and the third host machine script name "containerManager"
-        containerCommandCase1 = `node /project/application/setup/node_modules/@dependency/appDeploymentEnvironment/source/managerApp ${commandArgument.join(' ')}`,
-        containerCommandCase2 = `node /project/application/node_modules/@dependency/appDeploymentEnvironment/source/managerApp ${commandArgument.join(' ')}`,
+        containerCommandCase1 = `node /project/application/setup/node_modules/@dependency/appDeploymentEnvironment/ ${commandArgument.join(' ')}`,
+        containerCommandCase2 = `node /project/application/node_modules/@dependency/appDeploymentEnvironment/ ${commandArgument.join(' ')}`,
         containerBashCommand = `bash -c "${containerCommandCase1} || ${containerCommandCase2}"`,
         containerPrefix = 'managerApp'
     
