@@ -1,18 +1,26 @@
 import { spawn, spawnSync } from 'child_process'
 import operatingSystem from 'os'
 import path from 'path'
+import slash from 'slash'
+
+const containerPath = { // defined paths of volumes inside container.
+    application: '/project/application'
+}
 
 export function runManagerAppInContainerWithClientApp({
     applicationHostPath,
     managerAppHostPath
 }) {
+    let managerRelativePathFromApplication = path.relative(applicationHostPath, managerAppHostPath)
+    managerRelativePathFromApplication = slash(managerRelativePathFromApplication) // convert to Unix path from Windows path (change \ slash to /)
+    // NOTE: creating an absolute path for managerApp assumes that the module exist under the application directory (/project/application).
+    let managerAbsolutePathInContainer = slash(path.join(containerPath.application, managerRelativePathFromApplication)) // create an absolute path for managerApp which should be nested to application path.
 
     let image = 'node:latest',
         processCommand = 'docker',
         commandArgument = process.argv.slice(3), // remove first 2 commands - "<binPath>/node", "<path>/entrypoint.js" and the third host machine script name "containerManager"
-        containerCommandCase1 = `node /project/application/setup/node_modules/@dependency/appDeploymentEnvironment/ ${commandArgument.join(' ')}`,
-        containerCommandCase2 = `node /project/application/node_modules/@dependency/appDeploymentEnvironment/ ${commandArgument.join(' ')}`,
-        containerBashCommand = `bash -c "${containerCommandCase1} || ${containerCommandCase2}"`,
+        containerCommand = `node ${managerAbsolutePathInContainer} ${commandArgument.join(' ')}`,
+        // containerBashCommand = `bash -c "${containerCommandCase1} || ${containerCommandCase2}"`,
         containerPrefix = 'managerApp'
     
     let processArg = [
@@ -26,14 +34,14 @@ export function runManagerAppInContainerWithClientApp({
         `--env sshUsername=${operatingSystem.userInfo().username}`,
         `--name ${containerPrefix}`,
         `${image}`,
-        `${containerBashCommand}`
+        `${containerCommand}`
     ]
     
     console.log(
         `%s \n %s \n %s`,
         `\x1b[3m\x1b[2m > ${processCommand} ${processArg.join(' ')}\x1b[0m`,
         `\t\x1b[3m\x1b[2mimage:\x1b[0m ${image}`,
-        `\t\x1b[3m\x1b[2mcommand:\x1b[0m ${containerBashCommand}`
+        `\t\x1b[3m\x1b[2mcommand:\x1b[0m ${containerCommand}`
     )    
     
     let cp = spawn(processCommand, processArg, { detached: false, shell: true, stdio: [0,1,2] })

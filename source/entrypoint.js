@@ -6,10 +6,11 @@ if (require.main === module) { // if executed directly from the command-line
       console.error(error);
       process.exitCode = 1;
     })
-} else { // else if required in another module then export modules.
-    module.exports = {
-        runManagerAppInContainerWithClientApp: require('./hostMachineClientEntrypoint').runManagerAppInContainerWithClientApp,
-        managerApp
-    }
+} 
+
+// export anyway - useful when required as a module in another module.
+module.exports = {
+    runManagerAppInContainerWithClientApp: require('./hostMachineClientEntrypoint').runManagerAppInContainerWithClientApp,
+    managerApp
 }
   
