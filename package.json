@@ -1,11 +1,24 @@
 {
     "main": "./source/entrypoint.js",
     "name": "@dependency/appDeploymentEnvironment",
+    "version": "1.0.0",
     "workspaces": [
         "source",
         "setup",
         "./setup/script/hostMachineStartupScript/*",
         "./setup/script/containerScript/*"
     ],
-    "private": true
+    "private": true,
+    "dependencies": {
+        "child-process-promise": "^2.2.1",
+        "dockerode": "^2.5.1",
+        "rethinkdb": "^2.3.3",
+        "@dependency/addModuleResolutionPath": "https://github.com/AppScriptIO/addModuleResolutionPath",
+        "@dependency/moduleScopePattern": "https://github.com/AppScriptIO/moduleScopePattern",
+        "@dependency/installNodeJSModule": "https://github.com/AppScriptIO/installNodeJSModule",
+        "@dependency/parseKeyValuePairSeparatedBySymbol": "https://github.com/AppScriptIO/parseKeyValuePairSeparatedBySymbol",
+        "@dependency/JSModuleTypeCheck": "https://github.com/AppScriptIO/JSModuleTypeCheck",
+        "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation"
+    
+      }    
   }
