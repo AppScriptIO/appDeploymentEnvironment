@@ -9,6 +9,7 @@ const containerPath = { // defined paths of volumes inside container.
 
 export function runManagerAppInContainerWithClientApp({
     applicationHostPath,
+    // as default the managerApp should be installed (i.e. expected to be a dependency) as a dependency in a nested folder to the application.
     managerAppHostPath
 }) {
     let managerRelativePathFromApplication = path.relative(applicationHostPath, managerAppHostPath)
