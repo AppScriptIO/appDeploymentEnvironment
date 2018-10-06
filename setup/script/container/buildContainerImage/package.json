@@ -5,6 +5,7 @@
     "license": "MIT",
     "flat": false,
     "dependencies": {
-        "docker-registry-client": "^3.2.13"
+        "docker-registry-client": "^3.2.13",
+        "@dependency/nodeRelationshipGraph": "https://github.com/AppScriptIO/nodeRelationshipGraph"
     }
 }

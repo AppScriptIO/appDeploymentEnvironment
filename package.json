@@ -1,14 +1,13 @@
 {
     "main": "Irrelevant",
-    "name": "@dependency/appDeploymentManager",
+    "name": "@dependency/appDeploymentEnvironment",
     "version": "1.0.0",
     "workspaces": [
         "source",
         "setup",
-        "./setup/script/hostMachineStartupScript/*",
-        "./setup/script/containerScript/*"
+        "./setup/script/hostMachine/*",
+        "./setup/script/container/*"
     ],
     "private": true,
-    "dependencies": {
-    }
+    "dependencies": {}
 }

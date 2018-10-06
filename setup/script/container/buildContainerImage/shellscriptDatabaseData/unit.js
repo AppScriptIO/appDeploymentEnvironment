@@ -1,4 +1,4 @@
-import configuration from '../../../configuration/configuration.js'
+import configuration from '../../../../../setup/configuration'
 
 let data = [
     /**
@@ -57,7 +57,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.managerApp.rootFolder}/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.directory.application.containerAbsolutePath}/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `up --force-recreate rethinkdb_build`
         ],
@@ -75,7 +75,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.managerApp.rootFolder}/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.directory.application.containerAbsolutePath}/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `build containerManager_build`
         ],
@@ -84,7 +84,7 @@ let data = [
             shell: true,
             stdio: [0, 1, 2],
             env: {
-                dockerImage: process.env.dockerImage,
+                dockerImage: process.env.dockerImage || false,
                 DEPLOYMENT: 'imageBuild',
             }
         },
@@ -97,7 +97,7 @@ let data = [
         },
         command: 'docker-compose',
         argument: [
-            `-f ${configuration.managerApp.rootFolder}/setup/container/containerDeployment.dockerCompose.yml`,
+            `-f ${configuration.directory.application.containerAbsolutePath}/setup/container/containerDeployment.dockerCompose.yml`,
             `--project-name appDeploymentEnvironment`,
             `stop rethinkdb_build`
         ],
