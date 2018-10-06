@@ -61,8 +61,8 @@ services:
         # Running dependent container is handeled by the nodejs container manager app.
         # depends_on:
         #     - rethinkdb_build
-        # networks:
-        #     - build
+        networks:
+            - build
     "rethinkdb_build":
         image: rethinkdb:latest
         # ports:
