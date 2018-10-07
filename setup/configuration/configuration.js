@@ -52,7 +52,7 @@ module.exports = {
         ]
     },
     buildEnvironmentImage: {
-        dockerComposeVersion: '1.21.2',
+        dockerComposeVersion: '1.22.0',
         dockerMachineVersion: '0.15.0'
     },
     externalApp: {
