@@ -72,6 +72,14 @@ let data = [
                 }
             },
             {
+                nestedUnit: 'ga-8d13-4424-8853-asdfsdf',
+                pathPointerKey: 'XYZ3',
+                insertionPosition: {
+                    insertionPathPointer: null, 
+                    insertionPoint: '2299cc1e-238f-4fe5-9069-51351ded59a7'
+                }
+            },
+            {
                 nestedUnit: 'aaa32384-8d13-4424-8853-dd62141a91b9',
                 pathPointerKey: 'XYZ3',
                 insertionPosition: {
@@ -100,6 +108,8 @@ let data = [
     },
     { key: '92826780-d0b0-4fb9-964e-2945d7a03bfc', label: { name: 'run rethinkdb temporary container' },
       unit: '63fa6973-58c1-4ae9-b2c3-3a001d94cedd', insertionPoint: [], children: [], },
+    { key: 'ga-8d13-4424-8853-asdfsdf', label: { name: 'create docker network for build' }, 
+      unit: 'wegio-2dd3-4e57-be19-as', insertionPoint: [], children: [], },
     { key: 'aaa32384-8d13-4424-8853-dd62141a91b9', label: { name: 'run dockerfile build container' }, 
       unit: 'bcc280d1-2dd3-4e57-be19-a11821adc2d4', insertionPoint: [], children: [], },
     { key: '561b4a35-5250-439d-a692-2a761aa714ef', label: { name: 'stop/remove container rethinkdb which was used for build' }, 

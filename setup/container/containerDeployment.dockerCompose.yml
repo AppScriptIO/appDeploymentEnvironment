@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.7'
 
 networks: 
   "run": # for running manger container
@@ -49,7 +49,7 @@ services:
             # dockerfile path relative to the context specified above.
             dockerfile: ./setup/container/deploymentEnvironment.imageBuild.dockerFile
             network: # add network for build runtime (dockerfile RUN commands).
-                "build" # ISSUE - docker doesn't resolve the project name, it should be specified explicitly
+                "build" # ISSUE - docker doesn't resolve the project name, it should be specified explicitly. i.e. `<networkname>` -> `<projectName>_<networkName>`
             # args: 
             #     - DEPLOYMENT=${DEPLOYMENT}
             #     - entrypointConfigurationKey=${entrypointConfigurationKey}

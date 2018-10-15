@@ -69,6 +69,23 @@ let data = [
         implementation: 'spawnAsynchronous' 
     },
     {
+        key: 'wegio-2dd3-4e57-be19-as',
+        label: {
+            name: 'create network for build'
+        },
+        command: 'docker',
+        argument: [
+            `network create build`
+        ],
+        option: {
+            // cwd: '/',
+            shell: true,
+            stdio: [0, 1, 2],
+            env: {}
+        },
+        implementation: 'spawnIgnoreError'
+    },
+    {
         key: 'bcc280d1-2dd3-4e57-be19-a11821adc2d4',
         label: {
             name: 'run dockerfile build - temporary container that the build creates'
