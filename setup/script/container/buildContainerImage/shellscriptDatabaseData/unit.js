@@ -4,7 +4,7 @@ let data = [
     /**
      * Install Docker Compose
      */
-    { 
+    {
         key: '66181bdc-16f2-4fb3-af1f-4fe301ab6a18',
         label: {
             name: 'Run this command to download the latest version of Docker Compose:', 

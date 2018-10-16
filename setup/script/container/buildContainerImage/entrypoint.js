@@ -7,7 +7,7 @@ import configuration from '../../../../setup/configuration'
 import createStaticInstanceClasses from '@dependency/nodeRelationshipGraph'
 import { lastImageTagInRepository } from './utilityFunction.js'
 import initializeDatabaseData from '@dependency/databaseUtility/source/initializeDatabaseDataFromObject.js'
-import { interfaceDatabaseName as databaseData } from './shellscriptDatabaseData'
+import { interfaceDatabaseName as databaseData } from './shellscriptDatabaseData' // when exported modules are called, the `unit` data will be loaded with the process.env values set - i.e. env can be set till first call to this modules.
 
 process.env.dockerImageName = process.env.dockerImageName || 'myuserindocker/deployment-environment'
 
