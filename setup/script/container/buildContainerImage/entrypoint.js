@@ -22,10 +22,6 @@ process.env.dockerImageName = process.env.dockerImageName || 'myuserindocker/dep
         throw error
     }
     
-    // TODO: 
-    // 1. create static instance of class with no specific node initialization implemenation.
-    // 2. start transversing the node graph. 
-
     // Run linux commands on container image OS.
     console.log('Installing all necessary files.')
     let ShellscriptController = await createStaticInstanceClasses({
