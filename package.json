@@ -9,5 +9,8 @@
         "./setup/script/container/*"
     ],
     "private": true,
-    "dependencies": {}
+    "dependencies": {
+        "@dependency/appDeploymentLifecycle": "https://github.com/AppScriptIO/appDeploymentLifecycle",
+        "@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager"
+    }
 }
