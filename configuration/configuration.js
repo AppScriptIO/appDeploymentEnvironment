@@ -19,6 +19,7 @@ try {
 module.exports = {
     directory: {
         projectPath,
+        root:  path.resolve(`${__dirname}/../..`),
         application: {
             hostAbsolutePath: path.resolve(`${__dirname}/../..`),
             containerAbsolutePath: `${projectPath}/application`
