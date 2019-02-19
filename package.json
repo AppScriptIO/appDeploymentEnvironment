@@ -11,6 +11,6 @@
     "private": true,
     "dependencies": {
         "@dependency/appDeploymentLifecycle": "https://github.com/AppScriptIO/appDeploymentLifecycle",
-        "@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager"
+        "@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^1.x.x"
     }
 }
