@@ -1,6 +1,6 @@
 {
     "main": "Irrelevant",
-    "name": "@dependency/appDeploymentEnvironment",
+    "name": "@deployment/deploymentEnvironmentImage",
     "version": "1.0.0",
     "workspaces": [
         "source",
@@ -10,7 +10,7 @@
     ],
     "private": true,
     "dependencies": {
-        "@dependency/appDeploymentLifecycle": "https://github.com/AppScriptIO/appDeploymentLifecycle#semver:^1.x.x",
+        "@deployment/appDeploymentLifecycle": "https://github.com/AppScriptIO/appDeploymentLifecycle#semver:^1.x.x",
         "@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^1.x.x"
     }
 }

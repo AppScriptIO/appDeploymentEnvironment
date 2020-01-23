@@ -1,7 +1,7 @@
 const path = require('path')
 const projectPath = "/project";
 const resolvedModule = {
-    get appDeploymentLifecyclePath() { return path.dirname( require.resolve(`@dependency/appDeploymentLifecycle/package.json`) )  }
+    get appDeploymentLifecyclePath() { return path.dirname( require.resolve(`@deployment/appDeploymentLifecycle/package.json`) )  }
 }
 const managerAppRootFolder = `${projectPath}/managerApp`,        
       externalAppRootFolder = process.env.externalAppBasePath || `${projectPath}/application`;
@@ -9,7 +9,7 @@ const managerAppRootFolder = `${projectPath}/managerApp`,
 // try to find module in externalApp
 let externalAppAppDeploymentLifecycle;
 try {
-    externalAppAppDeploymentLifecycle = path.dirname( require.resolve(`@dependency/appDeploymentLifecycle/package.json`, { paths: [ externalAppRootFolder ] }) )  
+    externalAppAppDeploymentLifecycle = path.dirname( require.resolve(`@deployment/appDeploymentLifecycle/package.json`, { paths: [ externalAppRootFolder ] }) )  
 } catch (error) {
     // console.log(`• Cannot find appDeploymentLifecycle module in external app.`)
     externalAppAppDeploymentLifecycle = null
