@@ -2,15 +2,10 @@
     "main": "Irrelevant",
     "name": "@deployment/deploymentEnvironmentImage",
     "version": "1.0.0",
-    "workspaces": [
-        "source",
-        "setup",
-        "./setup/script/hostMachine/*",
-        "./setup/script/container/*"
-    ],
-    "private": true,
-    "dependencies": {
-        "@deployment/appDeploymentLifecycle": "https://github.com/AppScriptIO/appDeploymentLifecycle#semver:^1.x.x",
-        "@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^1.x.x"
+    "devDependencies": {
+        "@deployment/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^2.x.x",
+        "@deployment/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^2.x.x",
+        "@deployment/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^2.x.x",
+        "typescript": "*"
     }
 }
