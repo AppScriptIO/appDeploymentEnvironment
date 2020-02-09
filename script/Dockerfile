@@ -3,9 +3,7 @@
 FROM node:current
 RUN /bin/bash -c 'apt update -y && apt upgrade -y \
 && yarn global add -y jspm \
-&& apt install -y rsync'
-
-
+&& apt install -y rsync wget curl nano vim zip unzip'
 
 ### Installation of the following packages:
 # • Docker client.
