@@ -52,22 +52,23 @@
     },
     "typescript.check.npmIsInstalled": false,
     "workbench.colorCustomizations": {
-        "activityBar.background": "#5c6a09",
-        "activityBar.activeBorder": "#05333b",
+        "activityBar.background": "#17240d",
+        "activityBar.activeBorder": "#335a8d",
         "activityBar.foreground": "#e7e7e7",
         "activityBar.inactiveForeground": "#e7e7e799",
-        "activityBarBadge.background": "#05333b",
+        "activityBarBadge.background": "#335a8d",
         "activityBarBadge.foreground": "#e7e7e7",
-        "titleBar.activeBackground": "#5c6a09",
-        "titleBar.inactiveBackground": "#5c6a0999",
+        "titleBar.activeBackground": "#17240d",
+        "titleBar.inactiveBackground": "#17240d99",
         "titleBar.activeForeground": "#e7e7e7",
         "titleBar.inactiveForeground": "#e7e7e799",
-        "statusBar.background": "#5c6a09",
-        "statusBarItem.hoverBackground": "#85990d",
+        "statusBar.background": "#17240d",
+        "statusBarItem.hoverBackground": "#2f491b",
         "statusBar.foreground": "#e7e7e7"
     },
     "peacock.color": "#85990d",
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
-    }
+    },
+    "peacock.remoteColor": "#2e491b"
 }
